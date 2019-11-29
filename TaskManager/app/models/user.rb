@@ -12,3 +12,4 @@ class User < ApplicationRecord
   validates :last_name, length: { minimum: 2 }
   validates :email, uniqueness: true
   validates :email, format: { with: /\A\S+@.+\.\S+\z/ }
+end
