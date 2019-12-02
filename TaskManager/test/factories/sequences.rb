@@ -4,7 +4,10 @@ FactoryBot.define do
   sequence :email do |n|
     "email#{n}@factory.com"
   end
-  sequence :string do |n|
-    "string#{n}"
+  sequence(:first_name, aliases: [:first_name, :last_name, :password, :name, :description, :avatar]) do
+     |n| "string#{n}"
+  end
+  sequence :expired_at do
+    Time.now + rand(10)
   end
 end
