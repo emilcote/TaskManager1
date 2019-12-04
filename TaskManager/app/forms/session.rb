@@ -10,7 +10,7 @@ class Session
 
   validates :email, presence: true, format: { with: /\A\S+@.+\.\S+\z/ }
   validates :password, presence: true
-  validate :user_valid?
+  validate :validate_credentials
 
   def user
     User.find_by(email: email)
@@ -18,9 +18,8 @@ class Session
 
   private
 
-  def user_valid?
-    if user.blank? || !user.authenticate(password)
-      errors.add(:email, "email or password doesn't match")
-    end
-  end
+def validate_credentials
+  return if user && user.authenticate(password)
+  errors.add(:email, "email or password doesn't match")
+end
 end
