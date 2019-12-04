@@ -18,8 +18,8 @@ class Session
 
   private
 
-def validate_credentials
-  return if user && user.authenticate(password)
-  errors.add(:email, "email or password doesn't match")
-end
+  def validate_credentials
+    return if user && user.authenticate(password)
+    errors.add(:email, "email or password doesn't match")
+  end
 end
