@@ -1,0 +1,50 @@
+AllCops:
+    Exclude:
+      - config/initializers/secret_token.rb
+      - config/initializers/simple_form_bootstrap.rb
+      - node_modules/**/*
+      - bin/*
+      - vendor/**/*
+      - db/schema.rb
+
+Style/FrozenStringLiteralComment:
+    Enabled: false
+
+Style/ClassAndModuleChildren:
+    Enabled: false
+
+Style/Documentation:
+    Enabled: false
+
+Metrics/ClassLength:
+    Max: 150
+      
+Metrics/CyclomaticComplexity:
+    Max: 10
+      
+Metrics/LineLength:
+    Max: 160
+      
+Metrics/AbcSize:
+    Max: 40
+      
+Metrics/MethodLength:
+    Max: 30
+      
+Metrics/ModuleLength:
+    Max: 150
+      
+Metrics/PerceivedComplexity:
+    Max: 10
+      
+Style/NumericLiterals:
+    Enabled: false
+      
+Style/RegexpLiteral:
+    Enabled: false
+      
+Style/AsciiComments:
+    Enabled: false
+
+Style/For:
+    Enabled: false    
