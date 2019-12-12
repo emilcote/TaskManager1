@@ -28,7 +28,9 @@ gem 'therubyracer'
 gem 'twitter-bootstrap-rails'
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
+
 gem 'rollbar'
+gem 'newrelic_rpm'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
