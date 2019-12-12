@@ -1,6 +1,6 @@
 # README
 ![Build Status](https://travis-ci.org/emilcote/TaskManager1.svg?branch=feature%2FTravis)](https://travis-ci.org/emilcote/TaskManager1)
-[![Coverage Status](https://coveralls.io/repos/github/emilcote/TaskManager1/badge.svg)](https://coveralls.io/github/emilcote/TaskManager1)
+[![Coverage Status](https://coveralls.io/repos/github/emilcote/TaskManager1/badge.svg?branch=HEAD)](https://coveralls.io/github/emilcote/TaskManager1?branch=HEAD)
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
