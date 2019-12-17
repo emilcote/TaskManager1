@@ -1,7 +1,6 @@
 class Api::V1::TasksController < Api::V1::ApplicationController
     respond_to :json
     def index
-        #respond_to :json
         q_params = params[:q] || { s: 'id asc' }
       
         tasks = Task.all
@@ -16,5 +15,10 @@ class Api::V1::TasksController < Api::V1::ApplicationController
         }
       
         respond_with json
+    end
+
+    def show
+        task = Task.find(params[:id])
+        respond_with(task)
     end
 end
