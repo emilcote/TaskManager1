@@ -26,7 +26,6 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
     data = JSON.parse(response.body)
     created_task = Task.find(data['id'])
 
-    assert created_task.present?
     assert_equal task_attributes.stringify_keys, created_task.slice(*task_attributes.keys)
   end
 
@@ -51,6 +50,6 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
     delete :destroy, params: { id: task.id, format: :json }
     assert_response :success
 
-    assert !Task.where(id: task.id).exists?
+    assert !Task.exists?(id: task.id)
   end
 end

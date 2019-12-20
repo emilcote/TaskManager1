@@ -1,5 +1,5 @@
 class Api::V1::TasksController < Api::V1::ApplicationController
-  respond_to :json
+  # respond_to :json
   def index
     q_params = params[:q] || { s: 'id asc' }
 
@@ -23,31 +23,20 @@ class Api::V1::TasksController < Api::V1::ApplicationController
   end
 
   def create
-    task = current_user.my_tasks.new(task_params)
-    if task.save
-      respond_with(task, location: nil)
-    else
-      render(json: { errors: task.errors }, status: :unprocessable_entity)
-    end
+    task = current_user.my_tasks.create(task_params)
+    respond_with(task, location: nil)
   end
 
   def update
     task = Task.find(params[:id])
-
-    if task.update(task_params)
-      render(json: task)
-    else
-      render(json: { errors: task.errors }, status: :unprocessable_entity)
-    end
+    task.update(task_params)
+    respond_with(task, json: task)
   end
 
   def destroy
     task = Task.find(params[:id])
-    if task.destroy
-      head(:ok)
-    else
-      render(json: { errors: task.errors }, status: :unprocessable_entity)
-    end
+    task.destroy
+    respond_with(task)
   end
 
   private

@@ -1,4 +1,4 @@
-class Api::V1::ApplicationController < ApplicationController
+class Api::V1::ApplicationController < Api::ApplicationController
   def build_meta_tasks(collection)
     {
       count: collection.count,
