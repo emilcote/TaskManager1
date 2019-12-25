@@ -1,4 +1,4 @@
-= simple_form_for [:admin, @user.becomes(User)], local: true do |f|
+= simple_form_for [:admin, @user], local: true do |f|
   .row
     .col-lg-1
       = f.button :submit, "Back", formaction: admin_users_url, formmethod: "get"

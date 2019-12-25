@@ -2,11 +2,11 @@ class Api::V1::TasksController < Api::V1::ApplicationController
   def index
     q_params = params[:q] || { s: 'id asc' }
 
-    tasks = Task.all
-                .ransack(q_params)
-                .result
-                .page(params[:page])
-                .per(params[:per_page])
+    tasks = Task
+            .ransack(q_params)
+            .result
+            .page(params[:page])
+            .per(params[:per_page])
 
     json = {
       items: tasks.map { |t| TaskSerializer.new(t).as_json },
@@ -29,7 +29,7 @@ class Api::V1::TasksController < Api::V1::ApplicationController
   def update
     task = Task.find(params[:id])
     task.update(task_params)
-    respond_with(task, json: task)
+    respond_with(task)
   end
 
   def destroy
