@@ -12,7 +12,8 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-
+/tmp/cache/bootsnap-compile-cache/*
+/tmp/cache/.bootsnap-compile-cache
 # Ignore uploaded files in development.
 /storage/*
 !/storage/.keep
