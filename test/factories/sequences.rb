@@ -8,6 +8,6 @@ FactoryBot.define do
     "string#{n}"
   end
   sequence :expired_at do
-    Time.now + rand(10)
+    Time.now.utc + rand(10)
   end
 end
