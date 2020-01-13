@@ -22,6 +22,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
+gem 'js-routes'
 gem 'jquery-rails'
 gem 'less-rails' # Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 gem 'slim-rails'
