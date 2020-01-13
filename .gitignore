@@ -12,8 +12,7 @@
 /tmp/*
 !/log/.keep
 !/tmp/.keep
-/tmp/cache/bootsnap-compile-cache/*
-/tmp/cache/.bootsnap-compile-cache
+
 # Ignore uploaded files in development.
 /storage/*
 !/storage/.keep
@@ -30,6 +29,4 @@
 /yarn-error.log
 yarn-debug.log*
 .yarn-integrity
-
-vendor/cache
-/coverage/*
+coverage
