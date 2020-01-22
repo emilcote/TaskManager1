@@ -11,6 +11,7 @@ services:
       - bundle_cache:/bundle_cache
     ports:
       - 3000:3000
+      - 3035:3035
     environment:
       - CI=$CI
       - BUNDLE_PATH=/bundle_cache
