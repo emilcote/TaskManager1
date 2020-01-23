@@ -1,2 +1,1 @@
-web:     bundle exec rails server -p $PORT
-webpack: bin/webpack-dev-server --watch
+web: bundle exec rails s -b '0.0.0.0'
