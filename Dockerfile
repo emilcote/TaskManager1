@@ -1,4 +1,4 @@
-FROM ruby:latest
+FROM ruby:2.6.5
 
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash -
@@ -9,10 +9,12 @@ RUN apt-get update && apt-get install -y yarn
 
 RUN mkdir -p /task_manager
 WORKDIR /task_manager
+
 COPY Gemfile Gemfile.lock ./
 RUN bundle install --jobs 3
 
 COPY . /task_manager
 
 EXPOSE 3000
+EXPOSE 3035
 CMD bundle exec rails s -b '0.0.0.0' -p 3000

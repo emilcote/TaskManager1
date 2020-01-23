@@ -1,8 +1,8 @@
 version: '3.7'
-
 services:
   web:
     build: .
+    command: bundle exec foreman start -f Procfile.dev
     depends_on:
       - db
     volumes:
@@ -10,20 +10,19 @@ services:
       - ~/.bash_history:/root/.bash_history
       - bundle_cache:/bundle_cache
     ports:
-      - 3000:3000
+      - "3000:3000"
+      - "3035:3035"
     environment:
-      - CI=$CI
       - BUNDLE_PATH=/bundle_cache
-      - GEM_HOME=/bundle_cache
-      - GEM_PATH=/bundle_cache
       - DATABASE_HOST=db
       - DATABASE_USERNAME=postgres
+      - GEM_HOME=/bundle_cache
+      - GEM_PATH=/bundle_cache
   db:
     image: postgres:10.3-alpine
   bundle_cache:
     image: busybox
     volumes:
       - bundle_cache:/bundle_cache
-
 volumes:
   bundle_cache:
