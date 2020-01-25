@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 Rails.application.configure do
+  class Application < Rails::Application
+    config.web_console.whitelisted_ips = '172.18.0.1'
+  end
+
   config.after_initialize do
     Bullet.enable = true
     Bullet.alert         = true
