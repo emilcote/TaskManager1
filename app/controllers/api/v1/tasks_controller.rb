@@ -28,7 +28,6 @@ class Api::V1::TasksController < Api::V1::ApplicationController
 
   def update
     task = current_user.my_tasks.find(params[:id])
-    #task = Task.find(params[:id])
     task.update(task_params)
     respond_with(task)
   end
