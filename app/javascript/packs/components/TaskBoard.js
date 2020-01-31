@@ -1,13 +1,16 @@
 import React from "react";
-import {hot} from 'react-hot-loader/root';
 import Board from "react-trello";
 import { fetch } from './Fetch';
 import LaneHeader from './LaneHeader';
 import Button from 'react-bootstrap/Button';
+import AddPopup from './AddPopup';
 
 
+const components = {
+  LaneHeader: LaneHeader
+};
 
-class TasksBoard extends React.Component {
+export default class TasksBoard extends React.Component {
   state = {
     board: {
       new_task: null,
@@ -125,12 +128,13 @@ class TasksBoard extends React.Component {
         draggable
         laneDraggable={false}
         handleDragEnd={this.handleDragEnd}
+        components={components} 
       />
       <AddPopup
         show = {this.state.addPopupShow}
         onClose={this.handleAddClose}
       />
+      
     </div>;
   }
 }
-export default hot(TasksBoard)

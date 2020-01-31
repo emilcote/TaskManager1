@@ -24,11 +24,13 @@ export default class AddPopup extends React.Component {
   }
 
   handleCardAdd = () => {
+    const { name, description, assignee } = this.state;
+
     fetch('POST', window.Routes.api_v1_tasks_path(), {
       task: {
-        name: this.state.name,
-        description: this.state.description,
-        assignee_id: this.state.assignee.id
+        name,
+        description,
+        assignee_id: assignee.id
       }
     }).then( response => {
       if (response.statusText == 'Created') {
