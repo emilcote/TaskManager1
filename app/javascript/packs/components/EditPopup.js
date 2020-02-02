@@ -1,5 +1,5 @@
 import React from 'react';
-import { Modal, Button, Form} from 'react-bootstrap';
+import { Modal, Button, Form } from 'react-bootstrap';
 import { fetch } from './Fetch';
 
 export default class EditPopup extends React.Component {
@@ -27,9 +27,17 @@ export default class EditPopup extends React.Component {
 
   loadCard = (cardId) => {
     this.setState({ isLoading: true });
-    fetch('GET', window.Routes.api_v1_task_path(cardId, {format: 'json'})).then(({data}) => {
-      this.setState({ task: data});
-      this.setState({ isLoading: false });
+
+    fetch('GET', window.Routes.api_v1_task_path(cardId, {format: 'json'}))
+    .then(({data}) => {
+
+       this.setState({ 
+        task: data
+      });
+
+      if(this.state.task.author.id){
+        this.setState({ isLoading: false });
+      }
     });
   }
 
@@ -48,20 +56,25 @@ export default class EditPopup extends React.Component {
   }
 
   handleCardEdit = () => {
-    fetch('PUT', window.Routes.api_v1_task_path(this.props.cardId, {format: 'json'}), {
-      name: this.state.task.name,
-      description: this.state.task.description,
-      author_id: this.state.task.author.id,
-      assignee_id: this.state.task.assignee.id,
-      state: this.state.task.state
-    }).then( response => {
-      if (response.statusText == 'OK') {
-        this.props.onClose(this.state.task.state);
-      }
-      else {
-        alert('Update failed! ' + response.status + ' - ' + response.statusText);
-      }
-    });
+    const { name, description, author, state, assignee } = this.state.task;
+
+    fetch('PUT', 
+      window.Routes.api_v1_task_path(this.props.cardId, {format: 'json'}), {
+      name,
+      description,
+      author_id: author.id,
+      state
+    }).then( 
+      (response) => { 
+        if (response.data) {
+          this.props.onClose(state);
+        }
+        else {
+          alert(`Update failed! ${response.status} - ${response.statusText}`);
+        }
+      },
+      (errors) => alert(`Update failed! ${errors}`)
+    )
   }
 
   handleCardDelete = () => {
@@ -77,9 +90,13 @@ export default class EditPopup extends React.Component {
   }
 
   render () {
+    const { id, state, name, description, author } = this.state.task
+
     if (this.state.isLoading) {
       return (
-        <Modal show={this.props.show} onHide={this.props.onClose}>
+        <Modal
+        animation={false}
+        show={this.props.show} onHide={this.props.onClose}>
           <Modal.Header closeButton>
             <Modal.Title>
               Info
@@ -96,41 +113,43 @@ export default class EditPopup extends React.Component {
     }
     return (
       <div>
-        <Modal show={this.props.show} onHide={this.props.onClose}>
+        <Modal 
+        animation={false}
+        show={this.props.show} onHide={this.props.onClose}>
           <Modal.Header closeButton>
             <Modal.Title>
-              Task # {this.state.task.id} [{this.state.task.state}]
+              Task # {id} [{state}]
             </Modal.Title>
           </Modal.Header>
 
           <Modal.Body>
             <Form>
               <Form.Group controlId="formTaskName">
-                <Control.Label>Task name:</Control.Label>
+                <Form.Label>Task name:</Form.Label>
                 <Form.Control
                   type="text"
-                  value={this.state.task.name}
+                  value={name}
                   placeholder='Set the name for the task'
                   onChange={this.handleNameChange}
                 />
               </Form.Group>
               <Form.Group controlId="formDescriptionName">
-                <Control.Label>Task description:</Control.Label>
+                <Form.Label>Task description:</Form.Label>
                 <Form.Control
-                  componentClass="textarea"
-                  value={this.state.task.description}
+                  as="textarea" rows="3"
+                  value={description}
                   placeholder='Set the description for the task'
                   onChange={this.handleDecriptionChange}
                 />
               </Form.Group>
             </Form>
-            Author: {this.state.author.first_name} {this.state.author.last_name}
+            Author: {author.first_name} {author.last_name}
           </Modal.Body>
 
           <Modal.Footer>
-            <Button bsStyle="danger" onClick={this.handleCardDelete}>Delete</Button>
-            <Button onClick={this.props.onClose}>Close</Button>
-            <Button bsStyle="primary" onClick={this.handleCardEdit}>Save changes</Button>
+            <Button variant="danger" onClick={this.handleCardDelete}>Delete</Button>
+            <Button variant="secondary" onClick={this.props.onClose}>Close</Button>
+            <Button variant="primary" onClick={this.handleCardEdit}>Save changes</Button>
           </Modal.Footer>
         </Modal>
       </div>

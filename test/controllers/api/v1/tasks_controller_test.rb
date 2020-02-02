@@ -1,4 +1,5 @@
 require 'test_helper'
+
 class Api::V1::TasksControllerTest < ActionController::TestCase
   include AuthHelper
 
@@ -31,6 +32,7 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
 
   test 'should put update' do
     author = create :user
+    sign_in(author)
     assignee = create :user
     task = create :task, author: author
     task_attributes = attributes_for(:task)
@@ -46,10 +48,11 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
 
   test 'should delete destroy' do
     author = create :user
+    sign_in(author)
     task = create :task, author: author
     delete :destroy, params: { id: task.id, format: :json }
     assert_response :success
 
-    assert !Task.exists?(id: task.id)
+    assert !Task.where(id: task.id).exists?
   end
 end
