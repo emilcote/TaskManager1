@@ -1,13 +1,12 @@
 class Api::V1::TasksController < Api::V1::ApplicationController
-  
   def index
     q_params = params[:q] || { s: 'id asc' }
 
     tasks = Task.all
-                        .ransack(q_params)
-                        .result
-                        .page(params[:page])
-                        .per(params[:per_page])
+                .ransack(q_params)
+                .result
+                .page(params[:page])
+                .per(params[:per_page])
 
     json = {
       items: tasks.map { |t| TaskSerializer.new(t).as_json },
@@ -29,7 +28,7 @@ class Api::V1::TasksController < Api::V1::ApplicationController
 
   def update
     task = current_user.my_tasks.find(params[:id])
-  
+
     if task.update(task_params)
       render(json: task)
     else
@@ -39,11 +38,11 @@ class Api::V1::TasksController < Api::V1::ApplicationController
 
   def destroy
     task = current_user.my_tasks.find(params[:id])
-      if task.destroy
-        head(:ok)
-      else
-        render(json: { errors: task.errors }, status: :unprocessable_entity)
-      end
+    if task.destroy
+      head(:ok)
+    else
+      render(json: { errors: task.errors }, status: :unprocessable_entity)
+    end
   end
 
   private
