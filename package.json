@@ -1,6 +1,19 @@
 {
   "name": "task_manager",
   "private": true,
+  "scripts": {
+    "lint": "/app/node_modules/.bin/eslint app/javascript"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "dependencies": {
     "@babel/preset-react": "^7.8.3",
     "@hot-loader/react-dom": "npm:react-dom",
@@ -14,7 +27,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
-    "react-dom": "^16.8.6",
+    "react-dom": "^16.12.0",
     "react-hot-loader": "^4.12.18",
     "react-trello": "^2.2.3",
     "webpacker-react": "^0.3.2"
