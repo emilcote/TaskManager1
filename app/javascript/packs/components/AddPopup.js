@@ -49,12 +49,14 @@ export default class AddPopup extends React.Component {
   }
 
   render () {
+    const { show, onClose } = this.props;
+    const { name, description } = this.state;
     return(
       <Modal
       size="lg"
       animation={false}
-      show={this.props.show} 
-      onHide={this.props.onClose}
+      show={show} 
+      onHide={onClose}
       >
         <Modal.Header closeButton>
           <Modal.Title>New task</Modal.Title>
@@ -66,7 +68,7 @@ export default class AddPopup extends React.Component {
               <Form.Label>Task name:</Form.Label>
               <Form.Control
                 type="text"
-                value={this.state.name}
+                value={name}
                 placeholder='Set the name for the task'
                 onChange={this.handleNameChange}
               />
@@ -75,7 +77,7 @@ export default class AddPopup extends React.Component {
               <Form.Label>Task description:</Form.Label>
               <Form.Control
                 as="textarea" rows="3"
-                value={this.state.description}
+                value={description}
                 placeholder='Set the description for the task'
                 onChange={this.handleDecriptionChange}
               />
@@ -85,7 +87,7 @@ export default class AddPopup extends React.Component {
 
         <Modal.Footer>
           <Button variant="secondary" 
-            onClick={this.props.onClose}>Close</Button>
+            onClick={onClose}>Close</Button>
           <Button variant="primary" 
             onClick={this.handleCardAdd}>Save changes</Button>
         </Modal.Footer>
