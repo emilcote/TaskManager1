@@ -27,17 +27,10 @@ export default class EditPopup extends React.Component {
 
   loadCard = (cardId) => {
     this.setState({ isLoading: true });
-
-    fetch('GET', window.Routes.api_v1_task_path(cardId, {format: 'json'}))
-    .then(({data}) => {
-
-       this.setState({ 
-        task: data
-      });
-
-      if(this.state.task.author.id){
-        this.setState({ isLoading: false });
-      }
+    fetch('GET', window.Routes.api_v1_task_path(cardId, {format: 'json'})).then(({data}) => {
+      // this.setState({ task: data});
+      // this.setState({ isLoading: false });
+      this.setState( { task: data, isLoading: false })
     });
   }
 
