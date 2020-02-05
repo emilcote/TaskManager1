@@ -82,12 +82,13 @@ export default class EditPopup extends React.Component {
 
   render () {
     const { id, state, name, description, author } = this.state.task
-
+    const { show, onClose  } = this.props
     if (this.state.isLoading) {
       return (
         <Modal
         animation={false}
-        show={this.props.show} onHide={this.props.onClose}>
+        show={show} 
+        onHide={onClose}>
           <Modal.Header closeButton>
             <Modal.Title>
               Info
@@ -97,7 +98,7 @@ export default class EditPopup extends React.Component {
             Your task is loading. Please be patient.
           </Modal.Body>
            <Modal.Footer>
-            <Button onClick={this.props.onClose}>Close</Button>
+            <Button onClick={onClose}>Close</Button>
           </Modal.Footer>
         </Modal>
       )
@@ -106,7 +107,8 @@ export default class EditPopup extends React.Component {
       <div>
         <Modal 
         animation={false}
-        show={this.props.show} onHide={this.props.onClose}>
+        show={show} 
+        onHide={onClose}>
           <Modal.Header closeButton>
             <Modal.Title>
               Task # {id} [{state}]
@@ -139,7 +141,7 @@ export default class EditPopup extends React.Component {
 
           <Modal.Footer>
             <Button variant="danger" onClick={this.handleCardDelete}>Delete</Button>
-            <Button variant="secondary" onClick={this.props.onClose}>Close</Button>
+            <Button variant="secondary" onClick={onClose}>Close</Button>
             <Button variant="primary" onClick={this.handleCardEdit}>Save changes</Button>
           </Modal.Footer>
         </Modal>
