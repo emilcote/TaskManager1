@@ -3,7 +3,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 
 import { fetch } from './Fetch';
 
-export default class AddPopup extends React.Component {
+export default class CreatePopup extends React.Component {
   state = {
     name: '',
     description: '',
