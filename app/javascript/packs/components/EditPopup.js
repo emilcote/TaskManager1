@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { fetch } from './Fetch';
+import  TaskRepository  from './TaskRepository';
 
 export default class EditPopup extends React.Component {
   state = {
@@ -27,7 +28,7 @@ export default class EditPopup extends React.Component {
 
   loadCard = (cardId) => {
     this.setState({ isLoading: true });
-    fetch('GET', window.Routes.api_v1_task_path(cardId, {format: 'json'})).then(({data}) => {
+    TaskRepository.show(cardId).then(({data}) => {
       this.setState( { task: data, isLoading: false })
     });
   }
@@ -47,34 +48,20 @@ export default class EditPopup extends React.Component {
   handleCardEdit = () => {
     const { name, description, author, state } = this.state.task;
     const { cardId, onClose} = this.props;
-    fetch('PUT', 
-      window.Routes.api_v1_task_path(cardId, {format: 'json'}), {
+    TaskRepository.update(cardId, {task: {
       name,
       description,
       author_id: author.id,
       state
-    }).then( 
-      (response) => { 
-        if (response.data) {
-          onClose(state);
-        }
-        else {
-          alert(`Update failed! ${response.status} - ${response.statusText}`);
-        }
-      },
-      (errors) => alert(`Update failed! ${errors}`)
-    )
+  }}).then(() => {
+    onClose(state);
+  })
   }
 
   handleCardDelete = () => {
-    fetch('DELETE', window.Routes.api_v1_task_path(this.props.cardId, { format: 'json' }))
-      .then( response => {
-        if (response.statusText == 'OK') {
+     TaskRepository.destroy(this.props.cardId)
+      .then( () => {
           this.props.onClose(this.state.task.state);
-        }
-        else {
-          alert('DELETE failed! ' + response.status + ' - ' + response.statusText);
-        }
       });
   }
 
