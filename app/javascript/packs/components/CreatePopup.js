@@ -1,7 +1,7 @@
 import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
+import  TaskRepository  from './TaskRepository';
 
-import { fetch } from './Fetch';
 
 export default class CreatePopup extends React.Component {
   state = {
@@ -24,28 +24,18 @@ export default class CreatePopup extends React.Component {
   }
 
   handleCardAdd = () => {
-    const { name, description, assignee } = this.state;
-
-    fetch('POST', window.Routes.api_v1_tasks_path(), {
-      task: {
+    const { name, description, assignee } = this.state
+    TaskRepository.create( {task: {
         name,
         description,
         assignee_id: assignee.id
-      }
-    }).then( response => {
-      if (response.statusText == 'Created') {
-        this.props.onClose(true);
-        this.setState({ 
-          name: '',
-          description: ''
-        });
-      }
-      else {
-        alert(`Update failed! ${response.status} - ${response.statusText}`);
-      }
-      },
-      (errors) => alert(`Update failed! ${errors}`)
-    );
+    }}).then(() => {
+      this.props.onClose(true);
+      this.setState({ 
+        name: '',
+        description: ''
+      });
+  })
   }
 
   render () {

@@ -32,10 +32,8 @@ export default class EditPopup extends React.Component {
     });
   }
 
-  componentDidUpdate (prevProps) {
-    if (this.props.cardId != null && this.props.cardId !== prevProps.cardId) {
-      this.loadCard(this.props.cardId);
-    };
+  componentDidMount() {
+    this.loadCard(this.props.cardId);
   }
 
   handleNameChange = (e) => {
@@ -47,10 +45,10 @@ export default class EditPopup extends React.Component {
   }
 
   handleCardEdit = () => {
-    const { name, description, author, state, assignee } = this.state.task;
-
+    const { name, description, author, state } = this.state.task;
+    const { cardId, onClose} = this.props;
     fetch('PUT', 
-      window.Routes.api_v1_task_path(this.props.cardId, {format: 'json'}), {
+      window.Routes.api_v1_task_path(cardId, {format: 'json'}), {
       name,
       description,
       author_id: author.id,
@@ -58,7 +56,7 @@ export default class EditPopup extends React.Component {
     }).then( 
       (response) => { 
         if (response.data) {
-          this.props.onClose(state);
+          onClose(state);
         }
         else {
           alert(`Update failed! ${response.status} - ${response.statusText}`);
