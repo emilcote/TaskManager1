@@ -10,8 +10,8 @@ export default class CreatePopup extends React.Component {
     description: '',
     assignee: {
       id: null,
-      first_name: null,
-      last_name:  null,
+      firstName: null,
+      lastName:  null,
       email: null
     }
   }
@@ -29,7 +29,7 @@ export default class CreatePopup extends React.Component {
     TaskRepository.create( {task: {
         name,
         description,
-        assignee_id: assignee.id
+        assigneeId: assignee.id
     }}).then(() => {
       this.props.onTaskAdded();
       this.setState({ 

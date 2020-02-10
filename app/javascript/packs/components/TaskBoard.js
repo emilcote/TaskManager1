@@ -13,11 +13,11 @@ const components = {
 export default class TasksBoard extends React.Component {
   state = {
     board: {
-      new_task: null,
-      in_development: null,
-      in_qa: null,
-      in_code_review: null,
-      ready_for_release: null,
+      newTask: null,
+      inDevelopment: null,
+      inQa: null,
+      inCodeReview: null,
+      readyForRelease: null,
       released: null,
       archived: null
     },
@@ -32,7 +32,7 @@ export default class TasksBoard extends React.Component {
     return {
       id,
       title,
-      total_count: (tasks) ? tasks.meta.total_count : 'None',
+      totalCount: (tasks) ? tasks.meta.totalCount : 'None',
       cards: (tasks) ? tasks.items.map((task) => {
         return {
           ...task,

@@ -33,10 +33,9 @@ export function fetch(method, url, data) {
       return config
     },
     error => {
-      return Promise.reject(error),
-    }
+      return Promise.reject(error)
+    })
 
-  )
   const options = {
     method,
     headers: headers(),

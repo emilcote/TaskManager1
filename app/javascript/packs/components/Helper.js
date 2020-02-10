@@ -1,5 +1,4 @@
 import _ from 'lodash'
-
 function toCamelCase(object) {
   let camelCaseObject = _.cloneDeep(object)
   if (_.isArray(camelCaseObject)) {
@@ -8,7 +7,7 @@ function toCamelCase(object) {
   camelCaseObject = _.mapKeys(camelCaseObject, (value, key) => {
     return _.camelCase(key)
   })
-
+  
   return _.mapValues(camelCaseObject, value => {
     if (_.isPlainObject(value)) {
       return toCamelCase(value)
@@ -25,7 +24,7 @@ function toSnakeCase(object) {
     return _.map(snakeCaseObject, toSnakeCase)
   }
   snakeCaseObject = _.mapKeys(snakeCaseObject, (value, key) => {
-    return _.snakeCase(key),
+    return _.snakeCase(key)
   })
   
   return _.mapValues(snakeCaseObject, value => {

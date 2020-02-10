@@ -13,14 +13,14 @@ export default class EditPopup extends React.Component {
       state: null,
       author: {
         id: null,
-        first_name: null,
-        last_name: null,
+        firstName: null,
+        lastName: null,
         email: null
       },
       assignee: {
         id: null,
-        first_name: null,
-        last_name:  null,
+        firstName: null,
+        lastName:  null,
         email: null
       }
     },
@@ -52,7 +52,7 @@ export default class EditPopup extends React.Component {
     TaskRepository.update(cardId, {task: {
       name,
       description,
-      author_id: author.id,
+      authorId: author.id,
       state
   }}).then(() => {
     onClose(state);
@@ -122,7 +122,7 @@ export default class EditPopup extends React.Component {
                 />
               </Form.Group>
             </Form>
-            Author: {author.first_name} {author.last_name}
+            Author: {author.firstName} {author.lastName}
           </Modal.Body>
 
           <Modal.Footer>
