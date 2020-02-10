@@ -1,6 +1,7 @@
 import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import  TaskRepository  from './TaskRepository';
+import PropTypes from 'prop-types';
 
 
 export default class CreatePopup extends React.Component {
@@ -30,7 +31,7 @@ export default class CreatePopup extends React.Component {
         description,
         assignee_id: assignee.id
     }}).then(() => {
-      this.props.onClose(true);
+      this.props.onTaskAdded();
       this.setState({ 
         name: '',
         description: ''
@@ -39,7 +40,7 @@ export default class CreatePopup extends React.Component {
   }
 
   render () {
-    const { show, onClose } = this.props;
+    const { show, onClose, onTaskAdded } = this.props;
     const { name, description } = this.state;
     return(
       <Modal
@@ -85,3 +86,9 @@ export default class CreatePopup extends React.Component {
     )
   }
 }
+
+CreatePopup.propTypes = {
+  show: PropTypes.bool,
+  onClose: PropTypes.func,
+  onTaskAdded: PropTypes.func
+};

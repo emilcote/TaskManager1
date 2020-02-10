@@ -1,7 +1,8 @@
 import React from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { fetch } from './Fetch';
 import  TaskRepository  from './TaskRepository';
+import PropTypes from 'prop-types';
+
 
 export default class EditPopup extends React.Component {
   state = {
@@ -134,3 +135,9 @@ export default class EditPopup extends React.Component {
     )
   }
 }
+
+EditPopup.propTypes = {
+  show: PropTypes.bool,
+  onClose: PropTypes.func,
+  cardId: PropTypes.number
+};

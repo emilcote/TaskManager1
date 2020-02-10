@@ -1,6 +1,5 @@
 import React from "react";
 import Board from "react-trello";
-import { fetch } from './Fetch';
 import LaneHeader from './LaneHeader';
 import Button from 'react-bootstrap/Button';
 import CreatePopup from './CreatePopup';
@@ -109,11 +108,13 @@ export default class TasksBoard extends React.Component {
     this.setState({ addPopupShow: true });
   }
   
-  handleAddClose = ( added = false ) => {
+  handleTaskAdded = () => {
     this.setState({ addPopupShow: false });
-    if (added == true) {
-      this.loadLine('new_task');
-    };
+    this.loadLine('new_task');
+  }
+
+  handleAddHide = () => {
+    this.setState({ addPopupShow: false });
   }
   
   onCardClick = (cardId) => {
@@ -160,7 +161,8 @@ export default class TasksBoard extends React.Component {
       />
       <CreatePopup
         show = {this.state.addPopupShow}
-        onClose={this.handleAddClose}
+        onClose = {this.handleAddHide}
+        onTaskAdded = {this.handleTaskAdded}
       />
       {this.state.editPopupShow &&
       <EditPopup
