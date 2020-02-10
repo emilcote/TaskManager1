@@ -24,14 +24,14 @@ export default class CreatePopup extends React.Component {
     this.setState({ description: e.target.value });
   }
 
-  handleCardAdd = () => {
+  handleCardCreate = () => {
     const { name, description, assignee } = this.state
     TaskRepository.create( {task: {
         name,
         description,
         assigneeId: assignee.id
     }}).then(() => {
-      this.props.onTaskAdded();
+      this.props.onTaskCreated();
       this.setState({ 
         name: '',
         description: ''
@@ -40,7 +40,7 @@ export default class CreatePopup extends React.Component {
   }
 
   render () {
-    const { show, onClose, onTaskAdded } = this.props;
+    const { show, onClose, onTaskCreated } = this.props;
     const { name, description } = this.state;
     return(
       <Modal
@@ -80,7 +80,7 @@ export default class CreatePopup extends React.Component {
           <Button variant="secondary" 
             onClick={onClose}>Close</Button>
           <Button variant="primary" 
-            onClick={this.handleCardAdd}>Save changes</Button>
+            onClick={this.handleCardCreate}>Save changes</Button>
         </Modal.Footer>
       </Modal>
     )
@@ -90,5 +90,5 @@ export default class CreatePopup extends React.Component {
 CreatePopup.propTypes = {
   show: PropTypes.bool,
   onClose: PropTypes.func,
-  onTaskAdded: PropTypes.func
+  onTaskCreated: PropTypes.func
 };

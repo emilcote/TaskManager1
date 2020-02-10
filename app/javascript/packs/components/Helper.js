@@ -1,4 +1,5 @@
 import _ from 'lodash'
+
 function toCamelCase(object) {
   let camelCaseObject = _.cloneDeep(object)
   if (_.isArray(camelCaseObject)) {

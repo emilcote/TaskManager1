@@ -21,7 +21,7 @@ export default class TasksBoard extends React.Component {
       released: null,
       archived: null
     },
-    addPopupShow: false,
+    createPopupShow: false,
     editPopupShow: false,
     editCardId: null,
   }
@@ -104,17 +104,17 @@ export default class TasksBoard extends React.Component {
       });
   }
 
-  handleAddShow = () => {
-    this.setState({ addPopupShow: true });
+  handleCreateShow = () => {
+    this.setState({ createPopupShow: true });
   }
   
-  handleTaskAdded = () => {
-    this.handleAddHide();
+  handleTaskCreated = () => {
+    this.handleCreateHide();
     this.loadLine('new_task');
   }
 
-  handleAddHide = () => {
-    this.setState({ addPopupShow: false });
+  handleCreateHide = () => {
+    this.setState({ createPopupShow: false });
   }
   
   onCardClick = (cardId) => {
@@ -147,7 +147,7 @@ export default class TasksBoard extends React.Component {
     return <div>
       <h1>Your tasks</h1>
       <Button variant="primary" 
-          onClick={this.handleAddShow}>Create new task
+          onClick={this.handleCreateShow}>Create new task
       </Button>
       <Board
         data={this.getBoard()}
@@ -160,9 +160,9 @@ export default class TasksBoard extends React.Component {
         onCardClick={this.onCardClick}
       />
       <CreatePopup
-        show = {this.state.addPopupShow}
-        onClose = {this.handleAddHide}
-        onTaskAdded = {this.handleTaskAdded}
+        show = {this.state.createPopupShow}
+        onClose = {this.handleCreateHide}
+        onTaskCreated = {this.handleTaskCreated}
       />
       {this.state.editPopupShow &&
       <EditPopup
