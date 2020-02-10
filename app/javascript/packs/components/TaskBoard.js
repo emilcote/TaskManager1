@@ -109,7 +109,7 @@ export default class TasksBoard extends React.Component {
   }
   
   handleTaskAdded = () => {
-    this.setState({ addPopupShow: false });
+    this.handleAddHide();
     this.loadLine('new_task');
   }
 
