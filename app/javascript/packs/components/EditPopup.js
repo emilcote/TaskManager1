@@ -29,7 +29,7 @@ export default class EditPopup extends React.Component {
 
   loadCard = (cardId) => {
     this.setState({ isLoading: true });
-    TaskRepository.show(cardId).then(({data}) => {
+    TaskRepository.show(cardId).then(({ data }) => {
       this.setState( { task: data, isLoading: false })
     });
   }
@@ -49,7 +49,7 @@ export default class EditPopup extends React.Component {
   handleCardEdit = () => {
     const { name, description, author, state } = this.state.task;
     const { cardId, onClose} = this.props;
-    TaskRepository.update(cardId, {task: {
+    TaskRepository.update(cardId, { task: {
       name,
       description,
       authorId: author.id,
@@ -69,12 +69,13 @@ export default class EditPopup extends React.Component {
   render () {
     const { id, state, name, description, author } = this.state.task
     const { show, onClose  } = this.props
-    if (this.state.isLoading) {
+    const { isLoading } = this.state
+    if (isLoading) {
       return (
         <Modal
-        animation={false}
-        show={show} 
-        onHide={onClose}>
+        animation={ false }
+        show={ show } 
+        onHide={ onClose }>
           <Modal.Header closeButton>
             <Modal.Title>
               Info
@@ -84,7 +85,7 @@ export default class EditPopup extends React.Component {
             Your task is loading. Please be patient.
           </Modal.Body>
            <Modal.Footer>
-            <Button onClick={onClose}>Close</Button>
+            <Button onClick={ onClose }>Close</Button>
           </Modal.Footer>
         </Modal>
       )
@@ -92,12 +93,12 @@ export default class EditPopup extends React.Component {
     return (
       <div>
         <Modal 
-        animation={false}
-        show={show} 
-        onHide={onClose}>
+        animation={ false }
+        show={ show } 
+        onHide={ onClose }>
           <Modal.Header closeButton>
             <Modal.Title>
-              Task # {id} [{state}]
+              Task # { id } [{ state }]
             </Modal.Title>
           </Modal.Header>
 
@@ -107,28 +108,28 @@ export default class EditPopup extends React.Component {
                 <Form.Label>Task name:</Form.Label>
                 <Form.Control
                   type="text"
-                  value={name}
+                  value={ name }
                   placeholder='Set the name for the task'
-                  onChange={this.handleNameChange}
+                  onChange={ this.handleNameChange }
                 />
               </Form.Group>
               <Form.Group controlId="formDescriptionName">
                 <Form.Label>Task description:</Form.Label>
                 <Form.Control
                   as="textarea" rows="3"
-                  value={description}
+                  value={ description }
                   placeholder='Set the description for the task'
-                  onChange={this.handleDecriptionChange}
+                  onChange={ this.handleDecriptionChange }
                 />
               </Form.Group>
             </Form>
-            Author: {author.firstName} {author.lastName}
+            Author: { author.firstName } { author.lastName }
           </Modal.Body>
 
           <Modal.Footer>
-            <Button variant="danger" onClick={this.handleCardDelete}>Delete</Button>
-            <Button variant="secondary" onClick={onClose}>Close</Button>
-            <Button variant="primary" onClick={this.handleCardEdit}>Save changes</Button>
+            <Button variant="danger" onClick={ this.handleCardDelete }>Delete</Button>
+            <Button variant="secondary" onClick={ onClose }>Close</Button>
+            <Button variant="primary" onClick={ this.handleCardEdit }>Save changes</Button>
           </Modal.Footer>
         </Modal>
       </div>
@@ -137,7 +138,7 @@ export default class EditPopup extends React.Component {
 }
 
 EditPopup.propTypes = {
-  show: PropTypes.bool,
-  onClose: PropTypes.func,
-  cardId: PropTypes.number
+  show: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  cardId: PropTypes.number.isRequired
 };

@@ -40,7 +40,7 @@ export default class CreatePopup extends React.Component {
   }
 
   render () {
-    const { show, onClose, onTaskCreated } = this.props;
+    const { show, onClose } = this.props;
     const { name, description } = this.state;
     return(
       <Modal
@@ -68,9 +68,9 @@ export default class CreatePopup extends React.Component {
               <Form.Label>Task description:</Form.Label>
               <Form.Control
                 as="textarea" rows="3"
-                value={description}
+                value={ description }
                 placeholder='Set the description for the task'
-                onChange={this.handleDecriptionChange}
+                onChange={ this.handleDecriptionChange }
               />
             </Form.Group>
           </Form>
@@ -78,9 +78,9 @@ export default class CreatePopup extends React.Component {
 
         <Modal.Footer>
           <Button variant="secondary" 
-            onClick={onClose}>Close</Button>
+            onClick={ onClose }>Close</Button>
           <Button variant="primary" 
-            onClick={this.handleCardCreate}>Save changes</Button>
+            onClick={ this.handleCardCreate }>Save changes</Button>
         </Modal.Footer>
       </Modal>
     )

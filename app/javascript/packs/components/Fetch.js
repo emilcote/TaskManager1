@@ -1,6 +1,5 @@
 import axios from 'axios'
-import qs from 'qs'
-import {toCamelCase, toSnakeCase} from './Helper'
+import { toCamelCase, toSnakeCase } from './Helper'
 
 export function authenticityToken() {
   const token = document.querySelector('meta[name="csrf-token"]')

@@ -21,8 +21,8 @@ export default class TasksBoard extends React.Component {
       released: null,
       archived: null
     },
-    createPopupShow: false,
-    editPopupShow: false,
+    isCreateModalOpen: false,
+    isEditModalOpen: false,
     editCardId: null,
   }
 
@@ -104,8 +104,8 @@ export default class TasksBoard extends React.Component {
       });
   }
 
-  handleCreateShow = () => {
-    this.setState({ createPopupShow: true });
+  handleCreateModalOpen = () => {
+    this.setState({ isCreateModalOpen: true });
   }
   
   handleTaskCreated = () => {
@@ -114,7 +114,7 @@ export default class TasksBoard extends React.Component {
   }
 
   handleCreateHide = () => {
-    this.setState({ createPopupShow: false });
+    this.setState({ isCreateModalOpen: false });
   }
   
   onCardClick = (cardId) => {
@@ -123,7 +123,7 @@ export default class TasksBoard extends React.Component {
   }
   
   handleEditClose = ( edited = '' ) => {
-    this.setState({ editPopupShow: false, editCardId: null});
+    this.setState({ isEditModalOpen: false, editCardId: null});
     switch (edited) {
       case 'new_task':
       case 'in_development':
@@ -140,14 +140,14 @@ export default class TasksBoard extends React.Component {
   }
   
   handleEditShow = () => {
-    this.setState({ editPopupShow: true });
+    this.setState({ isEditModalOpen: true });
   }
 
   render() {
     return <div>
       <h1>Your tasks</h1>
       <Button variant="primary" 
-          onClick={this.handleCreateShow}>Create new task
+          onClick={this.handleCreateModalOpen}>Create new task
       </Button>
       <Board
         data={this.getBoard()}
@@ -160,13 +160,13 @@ export default class TasksBoard extends React.Component {
         onCardClick={this.onCardClick}
       />
       <CreatePopup
-        show = {this.state.createPopupShow}
+        show = {this.state.isCreateModalOpen}
         onClose = {this.handleCreateHide}
         onTaskCreated = {this.handleTaskCreated}
       />
-      {this.state.editPopupShow &&
+      {this.state.isEditModalOpen &&
       <EditPopup
-        show = {this.state.editPopupShow}
+        show = {this.state.isEditModalOpen}
         onClose={this.handleEditClose}
         cardId ={this.state.editCardId}
       />}
