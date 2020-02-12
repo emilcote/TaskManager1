@@ -2,7 +2,9 @@
   "name": "task_manager",
   "private": true,
   "scripts": {
-    "lint": "/app/node_modules/.bin/eslint app/javascript"
+    "lint": "eslint --debug app/",
+    "lint:write": "eslint --debug app/ --fix",
+    "prettier": "prettier --write app/**/*.js"
   },
   "lint-staged": {
     "*.js": [

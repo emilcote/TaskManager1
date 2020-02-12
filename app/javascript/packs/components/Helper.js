@@ -1,42 +1,42 @@
-import _ from 'lodash'
+import _ from "lodash";
 
 function toCamelCase(object) {
-  let camelCaseObject = _.cloneDeep(object)
+  let camelCaseObject = _.cloneDeep(object);
   if (_.isArray(camelCaseObject)) {
-    return _.map(camelCaseObject, toCamelCase)
+    return _.map(camelCaseObject, toCamelCase);
   }
-  camelCaseObject = _.mapKeys(camelCaseObject, (value, key) => {
-    return _.camelCase(key)
-  })
-  
+  camelCaseObject = _.mapKeys(camelCaseObject, (value, key) =>
+    _.camelCase(key)
+  );
+
   return _.mapValues(camelCaseObject, value => {
     if (_.isPlainObject(value)) {
-      return toCamelCase(value)
+      return toCamelCase(value);
     }
     if (_.isArray(value)) {
-      return _.map(value, toCamelCase)
+      return _.map(value, toCamelCase);
     }
-    return value
-  })
+    return value;
+  });
 }
 function toSnakeCase(object) {
-  let snakeCaseObject = _.cloneDeep(object)
+  let snakeCaseObject = _.cloneDeep(object);
   if (_.isArray(snakeCaseObject)) {
-    return _.map(snakeCaseObject, toSnakeCase)
+    return _.map(snakeCaseObject, toSnakeCase);
   }
-  snakeCaseObject = _.mapKeys(snakeCaseObject, (value, key) => {
-    return _.snakeCase(key)
-  })
-  
+  snakeCaseObject = _.mapKeys(snakeCaseObject, (value, key) =>
+    _.snakeCase(key)
+  );
+
   return _.mapValues(snakeCaseObject, value => {
     if (_.isPlainObject(value)) {
-      return toSnakeCase(value)
+      return toSnakeCase(value);
     }
     if (_.isArray(value)) {
-      return _.map(value, toSnakeCase)
+      return _.map(value, toSnakeCase);
     }
-    return value
-  })
+    return value;
+  });
 }
 
-export { toCamelCase, toSnakeCase }
+export { toCamelCase, toSnakeCase };
