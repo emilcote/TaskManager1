@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import TaskRepository from "./TaskRepository";
 import PropTypes from "prop-types";
+import UserSelect from "./UserSelect";
 
 export default class CreatePopup extends React.Component {
   state = {
@@ -40,6 +41,10 @@ export default class CreatePopup extends React.Component {
     });
   };
 
+  handleAssigneeChange = value => {
+    this.setState({ ...this.state.task, assignee: value });
+  }
+
   render() {
     const { show, onClose } = this.props;
     const { name, description } = this.state;
@@ -70,6 +75,17 @@ export default class CreatePopup extends React.Component {
                 onChange={this.handleDecriptionChange}
               />
             </Form.Group>
+            {/* <UserSelect
+              id="Author"
+              isDisabled="true"
+              value={this.state.task.author}
+              onChange={this.handleAuthorChange}
+            /> */}
+            <UserSelect
+              id="Assignee"
+              onChange={this.handleAssigneeChange}
+              value={this.state.assignee}
+            />
           </Form>
         </Modal.Body>
 

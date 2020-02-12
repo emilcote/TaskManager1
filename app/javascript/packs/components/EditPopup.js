@@ -2,6 +2,7 @@ import React from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import TaskRepository from "./TaskRepository";
 import PropTypes from "prop-types";
+import UserSelect from "./UserSelect";
 
 export default class EditPopup extends React.Component {
   state = {
@@ -48,14 +49,15 @@ export default class EditPopup extends React.Component {
   };
 
   handleCardEdit = () => {
-    const { name, description, author, state } = this.state.task;
+    const { name, description, author, state, assignee } = this.state.task;
     const { cardId, onClose } = this.props;
     TaskRepository.update(cardId, {
       task: {
         name,
         description,
         authorId: author.id,
-        state
+        state,
+        assigneeId: assignee.id
       }
     }).then(() => {
       onClose(state);
@@ -68,6 +70,14 @@ export default class EditPopup extends React.Component {
     });
   };
 
+  handleAuthorChange = (value) => {
+    this.setState({ task: { ...this.state.task, author: value }});
+  }
+  
+  handleAssigneeChange = (value) => {
+    this.setState({ task: { ...this.state.task, assignee: value }});
+  }
+  
   render() {
     const { id, state, name, description, author } = this.state.task;
     const { show, onClose } = this.props;
@@ -115,6 +125,17 @@ export default class EditPopup extends React.Component {
                   onChange={this.handleDecriptionChange}
                 />
               </Form.Group>
+              <UserSelect
+                id="Author"
+                isDisabled="true"
+                value={this.state.task.author}
+                onChange={this.handleAuthorChange}
+              />
+              <UserSelect
+                id="Assignee"
+                onChange={this.handleAssigneeChange}
+                value={this.state.assignee}
+              />
             </Form>
             Author: {author.firstName} {author.lastName}
           </Modal.Body>
