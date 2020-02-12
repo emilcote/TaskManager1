@@ -87,7 +87,7 @@ export default class CreatePopup extends React.Component {
 }
 
 CreatePopup.propTypes = {
-  show: PropTypes.bool,
-  onClose: PropTypes.func,
-  onTaskCreated: PropTypes.func
+  show: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onTaskCreated: PropTypes.func.isRequired
 };
