@@ -45,9 +45,9 @@ export default class CreatePopup extends React.Component {
     return(
       <Modal
       size="lg"
-      animation={false}
-      show={show} 
-      onHide={onClose}
+      animation={ false }
+      show={ show } 
+      onHide={ onClose }
       >
         <Modal.Header closeButton>
           <Modal.Title>New task</Modal.Title>
@@ -59,9 +59,9 @@ export default class CreatePopup extends React.Component {
               <Form.Label>Task name:</Form.Label>
               <Form.Control
                 type="text"
-                value={name}
+                value={ name }
                 placeholder='Set the name for the task'
-                onChange={this.handleNameChange}
+                onChange={ this.handleNameChange }
               />
             </Form.Group>
             <Form.Group controlId="formDescriptionName">
@@ -88,7 +88,7 @@ export default class CreatePopup extends React.Component {
 }
 
 CreatePopup.propTypes = {
-  show: PropTypes.bool,
-  onClose: PropTypes.func,
-  onTaskCreated: PropTypes.func
+  show: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onTaskCreated: PropTypes.func.isRequired
 };
