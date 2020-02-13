@@ -1,45 +1,48 @@
-import React, { Component } from 'react';
-import AsyncSelect from 'react-select/async';
-import { fetch } from './Fetch';
- export default class UserSelect extends Component {
-  state = {
-     inputValue: '',
-  }
-   getOptionLabel = (option) => {
-    return option.firstName+' '+option.lastName
-  }
-   getOptionValue = (option) => {
-    return option.id
-  }
-   loadOptions = (inputValue) => {
-    return fetch('GET', window.Routes.api_v1_users_path({q: { firstNameOrLastNameCont: inputValue }, format: 'json' }))
-      .then(({data}) => {
-        return data.items
-      })
-  }
-   handleInputChange = (newValue) => {
-    const inputValue = newValue.replace(/\W/g, '');
-    this.setState({ inputValue });
-    return inputValue;
-  }
-   componentDidMount() {
+import React, { Component } from "react";
+import AsyncSelect from "react-select/async";
+import UserRepository from "./UserRepository";
+import PropTypes from "prop-types";
+
+export default class UserSelect extends Component {
+  getOptionLabel = option => {
+    const { firstName, lastName } = option;
+    return `${firstName} ${lastName}`;
+  };
+  getOptionValue = option => {
+    return option.id;
+  };
+  loadOptions = inputValue => {
+    return UserRepository.index(inputValue).then(({ data }) => {
+      return data.items;
+    });
+  };
+
+  componentDidMount() {
     this.loadOptions();
   }
-   render() {
+  render() {
+    const { isDisabled, value, onChange, placeholder } = this.props;
+
     return (
       <div>
         <AsyncSelect
           cacheOptions
           loadOptions={this.loadOptions}
           defaultOptions
-          onInputChange={this.handleInputChange}
           getOptionLabel={this.getOptionLabel}
           getOptionValue={this.getOptionValue}
-          isDisabled={this.props.isDisabled}
-          defaultValue={this.props.value}
-          onChange={this.props.onChange}
+          isDisabled={isDisabled}
+          defaultValue={value}
+          onChange={onChange}
+          placeholder={placeholder}
         />
       </div>
     );
   }
 }
+
+UserSelect.propTypes = {
+  value: PropTypes.object,
+  isDisabled: PropTypes.bool,
+  onChange: PropTypes.func.isRequired
+};

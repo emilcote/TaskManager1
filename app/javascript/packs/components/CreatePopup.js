@@ -42,8 +42,8 @@ export default class CreatePopup extends React.Component {
   };
 
   handleAssigneeChange = value => {
-    this.setState({ ...this.state.task, assignee: value });
-  }
+    this.setState({ ...this.state, assignee: value });
+  };
 
   render() {
     const { show, onClose } = this.props;
@@ -53,7 +53,6 @@ export default class CreatePopup extends React.Component {
         <Modal.Header closeButton>
           <Modal.Title>New task</Modal.Title>
         </Modal.Header>
-
         <Modal.Body>
           <Form>
             <Form.Group controlId="formTaskName">
@@ -75,16 +74,9 @@ export default class CreatePopup extends React.Component {
                 onChange={this.handleDecriptionChange}
               />
             </Form.Group>
-            {/* <UserSelect
-              id="Author"
-              isDisabled="true"
-              value={this.state.task.author}
-              onChange={this.handleAuthorChange}
-            /> */}
             <UserSelect
-              id="Assignee"
+              placeholder="Assignee"
               onChange={this.handleAssigneeChange}
-              value={this.state.assignee}
             />
           </Form>
         </Modal.Body>

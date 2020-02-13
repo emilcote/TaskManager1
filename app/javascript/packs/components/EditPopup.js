@@ -70,16 +70,16 @@ export default class EditPopup extends React.Component {
     });
   };
 
-  handleAuthorChange = (value) => {
-    this.setState({ task: { ...this.state.task, author: value }});
-  }
-  
-  handleAssigneeChange = (value) => {
-    this.setState({ task: { ...this.state.task, assignee: value }});
-  }
-  
+  handleAuthorChange = value => {
+    this.setState({ task: { ...this.state.task, author: value } });
+  };
+
+  handleAssigneeChange = value => {
+    this.setState({ task: { ...this.state.task, assignee: value } });
+  };
+
   render() {
-    const { id, state, name, description, author } = this.state.task;
+    const { id, state, name, description } = this.state.task;
     const { show, onClose } = this.props;
     const { isLoading } = this.state;
     if (isLoading) {
@@ -126,18 +126,17 @@ export default class EditPopup extends React.Component {
                 />
               </Form.Group>
               <UserSelect
-                id="Author"
-                isDisabled="true"
+                placeholder="Author"
+                isDisabled
                 value={this.state.task.author}
                 onChange={this.handleAuthorChange}
               />
               <UserSelect
-                id="Assignee"
+                placeholder="Assignee"
                 onChange={this.handleAssigneeChange}
-                value={this.state.assignee}
+                value={this.state.task.assignee}
               />
             </Form>
-            Author: {author.firstName} {author.lastName}
           </Modal.Body>
 
           <Modal.Footer>
@@ -160,5 +159,5 @@ export default class EditPopup extends React.Component {
 EditPopup.propTypes = {
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  cardId: PropTypes.number.isRequired
+  cardId: PropTypes.string.isRequired
 };

@@ -38,7 +38,8 @@ export default class TasksBoard extends React.Component {
             return {
               ...task,
               label: task.state,
-              title: task.name
+              title: task.name,
+              id: String(task.id)
             };
           })
         : []
