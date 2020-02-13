@@ -2,15 +2,12 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-export default class LaneHeader extends React.Component {
-  render() {
-    const { id, cards, totalCount } = this.props;
-    return (
-      <div>
-        <b>{id}</b>({cards.length}/{totalCount})
-      </div>
-    );
-  }
+export default function LaneHeader(props) {
+  return (
+    <div>
+      <b>{props.id}</b>({props.cards.length}/{props.totalCount})
+    </div>
+  );
 }
 
 LaneHeader.propTypes = {
