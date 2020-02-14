@@ -13,7 +13,7 @@ export default function UserSelect(props) {
     UserRepository.index(inputValue).then(({ data }) => data.items);
   useEffect(() => {
     loadOptions();
-  });
+  }, []);
   const { isDisabled, value, onChange, placeholder } = props;
   return (
     <div>

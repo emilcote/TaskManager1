@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import TaskRepository from "./TaskRepository";
 import UserSelect from "./UserSelect";
 
-export default function CreatePopup(props) {
+const CreatePopup = props => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [assignee, setAssignee] = useState({
@@ -81,7 +81,8 @@ export default function CreatePopup(props) {
       </Modal.Footer>
     </Modal>
   );
-}
+};
+export default CreatePopup;
 
 CreatePopup.propTypes = {
   show: PropTypes.bool.isRequired,

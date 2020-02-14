@@ -1,56 +1,52 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import TaskRepository from "./TaskRepository";
 import PropTypes from "prop-types";
+import TaskRepository from "./TaskRepository";
 import UserSelect from "./UserSelect";
 
-export default class EditPopup extends React.Component {
-  state = {
-    task: {
+const EditPopup = props => {
+  const [task, setTask] = useState({
+    id: null,
+    name: "",
+    description: "",
+    state: null,
+    author: {
       id: null,
-      name: "",
-      description: "",
-      state: null,
-      author: {
-        id: null,
-        firstName: null,
-        lastName: null,
-        email: null
-      },
-      assignee: {
-        id: null,
-        firstName: null,
-        lastName: null,
-        email: null
-      }
+      firstName: null,
+      lastName: null,
+      email: null
     },
-    isLoading: true
-  };
+    assignee: {
+      id: null,
+      firstName: null,
+      lastName: null,
+      email: null
+    }
+  });
+  const [isLoading, setIsLoading] = useState(true);
 
-  loadCard = cardId => {
-    this.setState({ isLoading: true });
+  const loadCard = cardId => {
     TaskRepository.show(cardId).then(({ data }) => {
-      this.setState({ task: data, isLoading: false });
+      setTask(data);
+      setIsLoading(false);
     });
   };
 
-  componentDidMount() {
-    this.loadCard(this.props.cardId);
-  }
+  useEffect(() => {
+    loadCard(props.cardId);
+  }, [props.cardId]);
 
-  handleNameChange = e => {
-    this.setState({ task: { ...this.state.task, name: e.target.value } });
+  const handleNameChange = e => {
+    setTask({ ...task, name: e.target.value });
   };
 
-  handleDecriptionChange = e => {
-    this.setState({
-      task: { ...this.state.task, description: e.target.value }
-    });
+  const handleDecriptionChange = e => {
+    setTask({ ...task, description: e.target.value });
   };
 
-  handleCardEdit = () => {
-    const { name, description, author, state, assignee } = this.state.task;
-    const { cardId, onClose } = this.props;
+  const handleCardEdit = () => {
+    const { name, description, author, state, assignee } = task;
+    const { cardId, onClose } = props;
     TaskRepository.update(cardId, {
       task: {
         name,
@@ -60,101 +56,98 @@ export default class EditPopup extends React.Component {
         assigneeId: assignee.id
       }
     }).then(() => {
-      onClose(state);
+      onClose(task.state);
     });
   };
 
-  handleCardDelete = () => {
-    TaskRepository.destroy(this.props.cardId).then(() => {
-      this.props.onClose(this.state.task.state);
+  const handleCardDelete = () => {
+    TaskRepository.destroy(props.cardId).then(() => {
+      props.onClose(task.state);
     });
   };
 
-  handleAuthorChange = value => {
-    this.setState({ task: { ...this.state.task, author: value } });
+  const handleAuthorChange = value => {
+    setTask({ ...task, author: { ...value } });
   };
 
-  handleAssigneeChange = value => {
-    this.setState({ task: { ...this.state.task, assignee: value } });
+  const handleAssigneeChange = value => {
+    setTask({ ...task, assignee: value });
   };
 
-  render() {
-    const { id, state, name, description } = this.state.task;
-    const { show, onClose } = this.props;
-    const { isLoading } = this.state;
-    if (isLoading) {
-      return (
-        <Modal animation={false} show={show} onHide={onClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Info</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>Your task is loading. Please be patient.</Modal.Body>
-          <Modal.Footer>
-            <Button onClick={onClose}>Close</Button>
-          </Modal.Footer>
-        </Modal>
-      );
-    }
+  const { show, onClose } = props;
+  if (isLoading) {
     return (
-      <div>
-        <Modal animation={false} show={show} onHide={onClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>
-              Task # {id} [{state}]
-            </Modal.Title>
-          </Modal.Header>
-
-          <Modal.Body>
-            <Form>
-              <Form.Group controlId="formTaskName">
-                <Form.Label>Task name:</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={name}
-                  placeholder="Set the name for the task"
-                  onChange={this.handleNameChange}
-                />
-              </Form.Group>
-              <Form.Group controlId="formDescriptionName">
-                <Form.Label>Task description:</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows="3"
-                  value={description}
-                  placeholder="Set the description for the task"
-                  onChange={this.handleDecriptionChange}
-                />
-              </Form.Group>
-              <UserSelect
-                placeholder="Author"
-                isDisabled
-                value={this.state.task.author}
-                onChange={this.handleAuthorChange}
-              />
-              <UserSelect
-                placeholder="Assignee"
-                onChange={this.handleAssigneeChange}
-                value={this.state.task.assignee}
-              />
-            </Form>
-          </Modal.Body>
-
-          <Modal.Footer>
-            <Button variant="danger" onClick={this.handleCardDelete}>
-              Delete
-            </Button>
-            <Button variant="secondary" onClick={onClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={this.handleCardEdit}>
-              Save changes
-            </Button>
-          </Modal.Footer>
-        </Modal>
-      </div>
+      <Modal animation={false} show={show} onHide={onClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Info</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Your task is loading. Please be patient.</Modal.Body>
+        <Modal.Footer>
+          <Button onClick={onClose}>Close</Button>
+        </Modal.Footer>
+      </Modal>
     );
   }
-}
+  return (
+    <div>
+      <Modal animation={false} show={show} onHide={onClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>
+            Task # {task.id} [{task.state}]
+          </Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Form>
+            <Form.Group controlId="formTaskName">
+              <Form.Label>Task name:</Form.Label>
+              <Form.Control
+                type="text"
+                value={task.name}
+                placeholder="Set the name for the task"
+                onChange={handleNameChange}
+              />
+            </Form.Group>
+            <Form.Group controlId="formDescriptionName">
+              <Form.Label>Task description:</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows="3"
+                value={task.description}
+                placeholder="Set the description for the task"
+                onChange={handleDecriptionChange}
+              />
+            </Form.Group>
+            <UserSelect
+              placeholder="Author"
+              isDisabled
+              value={task.author}
+              onChange={handleAuthorChange}
+            />
+            <UserSelect
+              placeholder="Assignee"
+              onChange={handleAssigneeChange}
+              value={task.assignee}
+            />
+          </Form>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="danger" onClick={handleCardDelete}>
+            Delete
+          </Button>
+          <Button variant="secondary" onClick={onClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleCardEdit}>
+            Save changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+  );
+};
+export default EditPopup;
 
 EditPopup.propTypes = {
   show: PropTypes.bool.isRequired,
