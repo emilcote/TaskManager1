@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
-import PropTypes from "prop-types";
-import TaskRepository from "./TaskRepository";
-import UserSelect from "./UserSelect";
+import React, { useState, useEffect } from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import TaskRepository from './TaskRepository';
+import UserSelect from './UserSelect';
 
-const EditPopup = ({ cardId, onClose, show } = props) => {
+const EditPopup = ({ cardId, onClose, show }) => {
   const [task, setTask] = useState({
     id: null,
-    name: "",
-    description: "",
+    name: '',
+    description: '',
     state: null,
     author: {
       id: null,
       firstName: null,
       lastName: null,
-      email: null
+      email: null,
     },
     assignee: {
       id: null,
       firstName: null,
       lastName: null,
-      email: null
-    }
+      email: null,
+    },
   });
   const [isLoading, setIsLoading] = useState(true);
 
-  const loadCard = cardId => {
+  const loadCard = (cardId) => {
     TaskRepository.show(cardId).then(({ data }) => {
       setTask(data);
       setIsLoading(false);
@@ -36,24 +36,26 @@ const EditPopup = ({ cardId, onClose, show } = props) => {
     loadCard(cardId);
   }, [cardId]);
 
-  const handleNameChange = e => {
+  const handleNameChange = (e) => {
     setTask({ ...task, name: e.target.value });
   };
 
-  const handleDecriptionChange = e => {
+  const handleDecriptionChange = (e) => {
     setTask({ ...task, description: e.target.value });
   };
 
   const handleCardEdit = () => {
-    const { name, description, author, state, assignee } = task;
+    const {
+      name, description, author, state, assignee,
+    } = task;
     TaskRepository.update(cardId, {
       task: {
         name,
         description,
         authorId: author.id,
         state,
-        assigneeId: assignee.id
-      }
+        assigneeId: assignee.id,
+      },
     }).then(() => {
       onClose(task.state);
     });
@@ -65,11 +67,11 @@ const EditPopup = ({ cardId, onClose, show } = props) => {
     });
   };
 
-  const handleAuthorChange = value => {
+  const handleAuthorChange = (value) => {
     setTask({ ...task, author: { ...value } });
   };
 
-  const handleAssigneeChange = value => {
+  const handleAssigneeChange = (value) => {
     setTask({ ...task, assignee: value });
   };
 
@@ -86,13 +88,21 @@ const EditPopup = ({ cardId, onClose, show } = props) => {
       </Modal>
     );
   }
-  const { name, description, author, state, assignee, id } = task;
+  const {
+    name, description, author, state, assignee, id,
+  } = task;
   return (
     <div>
       <Modal animation={false} show={show} onHide={onClose}>
         <Modal.Header closeButton>
           <Modal.Title>
-            Task # {id} [{state}]
+            Task #
+            {' '}
+            {id}
+            {' '}
+            [
+            {state}
+            ]
           </Modal.Title>
         </Modal.Header>
 
@@ -150,6 +160,6 @@ const EditPopup = ({ cardId, onClose, show } = props) => {
 EditPopup.propTypes = {
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  cardId: PropTypes.string.isRequired
+  cardId: PropTypes.string.isRequired,
 };
 export default EditPopup;

@@ -1,9 +1,14 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
-const LaneHeader = props => (
+const LaneHeader = ({ id, cards, totalCount }) => (
   <div>
-    <b>{props.id}</b>({props.cards.length}/{props.totalCount})
+    <b>{id}</b>
+    (
+    {cards.length}
+    /
+    {totalCount}
+    )
   </div>
 );
 
@@ -11,7 +16,7 @@ LaneHeader.propTypes = {
   id: PropTypes.string,
   cards: PropTypes.array.isRequired,
   totalCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-    .isRequired
+    .isRequired,
 };
 
 export default LaneHeader;

@@ -1,17 +1,17 @@
-import { Modal, Button, Form } from "react-bootstrap";
-import PropTypes from "prop-types";
-import React, { useState } from "react";
-import TaskRepository from "./TaskRepository";
-import UserSelect from "./UserSelect";
+import { Modal, Button, Form } from 'react-bootstrap';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import TaskRepository from './TaskRepository';
+import UserSelect from './UserSelect';
 
-const CreatePopup = ({ show, onClose, onTaskCreate } = props) => {
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
+const CreatePopup = ({ show, onClose, onTaskCreate }) => {
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
   const [assignee, setAssignee] = useState({
     id: null,
     firstName: null,
     lastName: null,
-    email: null
+    email: null,
   });
 
   const handleCardCreate = () => {
@@ -19,23 +19,23 @@ const CreatePopup = ({ show, onClose, onTaskCreate } = props) => {
       task: {
         name,
         description,
-        assigneeId: assignee.id
-      }
+        assigneeId: assignee.id,
+      },
     }).then(() => {
       onTaskCreate();
-      setName("");
-      setDescription("");
+      setName('');
+      setDescription('');
     });
   };
 
-  const handleNameChange = e => {
+  const handleNameChange = (e) => {
     setName(e.target.value);
   };
-  const handleDecriptionChange = e => {
+  const handleDecriptionChange = (e) => {
     setDescription(e.target.value);
   };
 
-  const handleAssigneeChange = value => {
+  const handleAssigneeChange = (value) => {
     setAssignee(value);
   };
 
@@ -86,6 +86,6 @@ const CreatePopup = ({ show, onClose, onTaskCreate } = props) => {
 CreatePopup.propTypes = {
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onTaskCreate: PropTypes.func.isRequired
+  onTaskCreate: PropTypes.func.isRequired,
 };
 export default CreatePopup;
