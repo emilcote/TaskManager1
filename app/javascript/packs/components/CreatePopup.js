@@ -1,10 +1,12 @@
-import React, { useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import PropTypes from "prop-types";
+import React, { useState } from "react";
 import TaskRepository from "./TaskRepository";
 import UserSelect from "./UserSelect";
 
 const CreatePopup = props => {
+  const { onTaskCreate } = props;
+  const { show, onClose } = props;
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [assignee, setAssignee] = useState({
@@ -14,14 +16,6 @@ const CreatePopup = props => {
     email: null
   });
 
-  const handleNameChange = e => {
-    setName(e.target.value);
-  };
-
-  const handleDecriptionChange = e => {
-    setDescription(e.target.value);
-  };
-
   const handleCardCreate = () => {
     TaskRepository.create({
       task: {
@@ -30,17 +24,23 @@ const CreatePopup = props => {
         assigneeId: assignee.id
       }
     }).then(() => {
-      props.onTaskCreated();
+      onTaskCreate();
       setName("");
       setDescription("");
     });
+  };
+
+  const handleNameChange = e => {
+    setName(e.target.value);
+  };
+  const handleDecriptionChange = e => {
+    setDescription(e.target.value);
   };
 
   const handleAssigneeChange = value => {
     setAssignee(value);
   };
 
-  const { show, onClose } = props;
   return (
     <Modal size="lg" animation={false} show={show} onHide={onClose}>
       <Modal.Header closeButton>
@@ -67,10 +67,12 @@ const CreatePopup = props => {
               onChange={handleDecriptionChange}
             />
           </Form.Group>
+          <Form.Group controlId="formChangeAssignee">
+            Select Assignee:
+          </Form.Group>
           <UserSelect placeholder="Assignee" onChange={handleAssigneeChange} />
         </Form>
       </Modal.Body>
-
       <Modal.Footer>
         <Button variant="secondary" onClick={onClose}>
           Close
@@ -82,10 +84,10 @@ const CreatePopup = props => {
     </Modal>
   );
 };
-export default CreatePopup;
 
 CreatePopup.propTypes = {
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onTaskCreated: PropTypes.func.isRequired
+  onTaskCreate: PropTypes.func.isRequired
 };
+export default CreatePopup;

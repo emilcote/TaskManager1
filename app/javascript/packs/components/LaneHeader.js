@@ -1,14 +1,11 @@
-/* eslint-disable react/forbid-prop-types */
 import React from "react";
 import PropTypes from "prop-types";
 
-export default function LaneHeader(props) {
-  return (
-    <div>
-      <b>{props.id}</b>({props.cards.length}/{props.totalCount})
-    </div>
-  );
-}
+const LaneHeader = props => (
+  <div>
+    <b>{props.id}</b>({props.cards.length}/{props.totalCount})
+  </div>
+);
 
 LaneHeader.propTypes = {
   id: PropTypes.string,
@@ -16,3 +13,5 @@ LaneHeader.propTypes = {
   totalCount: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
     .isRequired
 };
+
+export default LaneHeader;
