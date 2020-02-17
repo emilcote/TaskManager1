@@ -4,8 +4,7 @@ import PropTypes from "prop-types";
 import TaskRepository from "./TaskRepository";
 import UserSelect from "./UserSelect";
 
-const EditPopup = props => {
-  const { cardId, onClose, show } = props;
+const EditPopup = ({ cardId, onClose, show } = props) => {
   const [task, setTask] = useState({
     id: null,
     name: "",
