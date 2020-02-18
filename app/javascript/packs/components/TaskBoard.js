@@ -1,183 +1,167 @@
-import React from "react";
-import Board from "react-trello";
-import LaneHeader from "./LaneHeader";
-import Button from "react-bootstrap/Button";
-import CreatePopup from "./CreatePopup";
-import EditPopup from "./EditPopup";
-import TaskRepository from "./TaskRepository";
+import Board from 'react-trello';
+import Button from 'react-bootstrap/Button';
+import React, { useState, useEffect } from 'react';
+import { snakeCase } from 'change-case';
+import LaneHeader from './LaneHeader';
+import CreatePopup from './CreatePopup';
+import EditPopup from './EditPopup';
+import TaskRepository from './TaskRepository';
 
 const components = {
-  LaneHeader: LaneHeader
+  LaneHeader,
 };
 
-export default class TasksBoard extends React.Component {
-  state = {
-    board: {
-      newTask: null,
-      inDevelopment: null,
-      inQa: null,
-      inCodeReview: null,
-      readyForRelease: null,
-      released: null,
-      archived: null
-    },
-    isCreateModalOpen: false,
-    isEditModalOpen: false,
-    editCardId: null
-  };
+const TasksBoard = () => {
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editCardId, setEditCardId] = useState(null);
+  const [board, setBoard] = useState({
+    newTask: null,
+    inDevelopment: null,
+    inQa: null,
+    inCodeReview: null,
+    readyForRelease: null,
+    released: null,
+    archived: null,
+  });
 
-  generateLane(id, title) {
-    const tasks = this.state[id];
-
+  const generateLane = (id, title) => {
+    const tasks = board[id];
     return {
       id,
       title,
-      totalCount: tasks ? tasks.meta.totalCount : "None",
+      totalCount: tasks ? tasks.meta.totalCount : 'None',
       cards: tasks
-        ? tasks.items.map(task => {
-            return {
-              ...task,
-              label: task.state,
-              title: task.name
-            };
-          })
-        : []
-    };
-  }
-
-  getBoard() {
-    return {
-      lanes: [
-        this.generateLane("new_task", "New"),
-        this.generateLane("in_development", "In Dev"),
-        this.generateLane("in_qa", "In QA"),
-        this.generateLane("in_code_review", "in CR"),
-        this.generateLane("ready_for_release", "Ready for release"),
-        this.generateLane("released", "Released"),
-        this.generateLane("archived", "Archived")
-      ]
-    };
-  }
-
-  loadLines() {
-    this.loadLine("new_task");
-    this.loadLine("in_development");
-    this.loadLine("in_qa");
-    this.loadLine("in_code_review");
-    this.loadLine("ready_for_release");
-    this.loadLine("released");
-    this.loadLine("archived");
-  }
-
-  componentDidMount() {
-    this.loadLines();
-  }
-
-  loadLine(state, page = 1) {
-    this.fetchLine(state, page).then(data => {
-      this.setState({
-        [state]: data
-      });
-    });
-  }
-
-  fetchLine(state, page = 1) {
-    return TaskRepository.index(state, page).then(({ data }) => {
-      return data;
-    });
-  }
-
-  onLaneScroll = (requestedPage, state) => {
-    return this.fetchLine(state, requestedPage).then(({ items }) => {
-      return items.map(task => {
-        return {
+        ? tasks.items.map((task) => ({
           ...task,
           label: task.state,
-          title: task.name
-        };
+          title: task.name,
+          id: String(task.id),
+        }))
+        : [],
+    };
+  };
+
+  const getBoard = () => ({
+    lanes: [
+      generateLane('newTask', 'New'),
+      generateLane('inDevelopment', 'In Dev'),
+      generateLane('inQa', 'In QA'),
+      generateLane('inCodeReview', 'in CR'),
+      generateLane('readyForRelease', 'Ready for release'),
+      generateLane('released', 'Released'),
+      generateLane('archived', 'Archived'),
+    ],
+  });
+
+  const loadLines = () => {
+    Promise.all([
+      fetchLine('new_task'),
+      fetchLine('archived'),
+      fetchLine('in_development'),
+      fetchLine('released'),
+      fetchLine('ready_for_release'),
+      fetchLine('in_qa'),
+      fetchLine('in_code_review'),
+    ]).then((data) => {
+      const [
+        newTask,
+        archived,
+        inDevelopment,
+        released,
+        readyForRelease,
+        inQa,
+        inCodeReview,
+      ] = data;
+      setBoard({
+        newTask,
+        inDevelopment,
+        inQa,
+        inCodeReview,
+        readyForRelease,
+        released,
+        archived,
       });
     });
   };
 
-  handleDragEnd = (cardId, sourceLaneId, targetLaneId) => {
-    TaskRepository.update(cardId, { task: { state: targetLaneId } }).then(
-      () => {
-        this.loadLine(sourceLaneId);
-        this.loadLine(targetLaneId);
-      }
-    );
+  useEffect(() => {
+    loadLines();
+  }, []);
+
+  const fetchLine = (state, page = 1) => TaskRepository.index(state, page).then(({ data }) => data);
+
+  const onLaneScroll = (requestedPage, state) => fetchLine(state, requestedPage).then(({ items }) => items.map((task) => ({
+    ...task,
+    label: task.state,
+    title: task.name,
+  })));
+
+  const handleDragEnd = (cardId, sourceLaneId, targetLaneId) => {
+    TaskRepository.update(cardId, {
+      task: { state: snakeCase(targetLaneId) },
+    }).then(() => {
+      loadLines();
+    });
   };
 
-  handleCreateModalOpen = () => {
-    this.setState({ isCreateModalOpen: true });
+  const handleCreateModalOpen = () => {
+    setIsCreateModalOpen(true);
   };
 
-  handleTaskCreated = () => {
-    this.handleCreateHide();
-    this.loadLine("new_task");
+  const handleCreateHide = () => {
+    setIsCreateModalOpen(false);
   };
 
-  handleCreateHide = () => {
-    this.setState({ isCreateModalOpen: false });
+  const handleTaskCreated = () => {
+    handleCreateHide();
+    loadLines();
   };
 
-  onCardClick = cardId => {
-    this.setState({ editCardId: cardId });
-    this.handleEditShow();
+  const onCardClick = (cardId) => {
+    setEditCardId(cardId);
+    handleEditShow();
   };
 
-  handleEditClose = (edited = "") => {
-    this.setState({ isEditModalOpen: false, editCardId: null });
-    switch (edited) {
-      case "new_task":
-      case "in_development":
-      case "in_qa":
-      case "in_code_review":
-      case "ready_for_release":
-      case "released":
-      case "archived":
-        this.loadLine(edited);
-        break;
-      default:
-        break;
-    }
+  const handleEditClose = () => {
+    setIsEditModalOpen(false);
+    setEditCardId(null);
+    loadLines();
   };
 
-  handleEditShow = () => {
-    this.setState({ isEditModalOpen: true });
+  const handleEditShow = () => {
+    setIsEditModalOpen(true);
   };
 
-  render() {
-    return (
-      <div>
-        <h1>Your tasks</h1>
-        <Button variant="primary" onClick={this.handleCreateModalOpen}>
-          Create new task
-        </Button>
-        <Board
-          data={this.getBoard()}
-          onLaneScroll={this.onLaneScroll}
-          customLaneHeader={<LaneHeader />}
-          cardsMeta={this.state}
-          draggable
-          laneDraggable={false}
-          handleDragEnd={this.handleDragEnd}
-          components={components}
-          onCardClick={this.onCardClick}
+  return (
+    <div>
+      <h1>Your tasks</h1>
+      <Button variant="info" onClick={handleCreateModalOpen}>
+        Create new task
+      </Button>
+      <Board
+        data={getBoard()}
+        onLaneScroll={onLaneScroll}
+        cardsMeta={board}
+        draggable
+        laneDraggable={false}
+        handleDragEnd={handleDragEnd}
+        components={components}
+        onCardClick={onCardClick}
+      />
+      <CreatePopup
+        show={isCreateModalOpen}
+        onClose={handleCreateHide}
+        onTaskCreate={handleTaskCreated}
+      />
+      {isEditModalOpen && (
+        <EditPopup
+          show={isEditModalOpen}
+          onClose={handleEditClose}
+          cardId={editCardId}
         />
-        <CreatePopup
-          show={this.state.isCreateModalOpen}
-          onClose={this.handleCreateHide}
-          onTaskCreated={this.handleTaskCreated}
-        />
-        {this.state.isEditModalOpen && (
-          <EditPopup
-            show={this.state.isEditModalOpen}
-            onClose={this.handleEditClose}
-            cardId={this.state.editCardId}
-          />
-        )}
-      </div>
-    );
-  }
-}
+      )}
+    </div>
+  );
+};
+export default TasksBoard;

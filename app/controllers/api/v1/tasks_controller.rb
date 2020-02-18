@@ -28,21 +28,14 @@ class Api::V1::TasksController < Api::V1::ApplicationController
 
   def update
     task = current_user.my_tasks.find(params[:id])
-
-    if task.update(task_params)
-      render(json: task)
-    else
-      render(json: { errors: task.errors }, status: :unprocessable_entity)
-    end
+    task.update(task_params)
+    respond_with(task, json: task)
   end
 
   def destroy
     task = current_user.my_tasks.find(params[:id])
-    if task.destroy
-      head(:ok)
-    else
-      render(json: { errors: task.errors }, status: :unprocessable_entity)
-    end
+    task.destroy
+    respond_with(task, json: task)
   end
 
   private

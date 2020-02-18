@@ -1,15 +1,13 @@
-import _ from "lodash";
+import _ from 'lodash';
 
 function toCamelCase(object) {
   let camelCaseObject = _.cloneDeep(object);
   if (_.isArray(camelCaseObject)) {
     return _.map(camelCaseObject, toCamelCase);
   }
-  camelCaseObject = _.mapKeys(camelCaseObject, (value, key) =>
-    _.camelCase(key)
-  );
+  camelCaseObject = _.mapKeys(camelCaseObject, (value, key) => _.camelCase(key));
 
-  return _.mapValues(camelCaseObject, value => {
+  return _.mapValues(camelCaseObject, (value) => {
     if (_.isPlainObject(value)) {
       return toCamelCase(value);
     }
@@ -24,11 +22,9 @@ function toSnakeCase(object) {
   if (_.isArray(snakeCaseObject)) {
     return _.map(snakeCaseObject, toSnakeCase);
   }
-  snakeCaseObject = _.mapKeys(snakeCaseObject, (value, key) =>
-    _.snakeCase(key)
-  );
+  snakeCaseObject = _.mapKeys(snakeCaseObject, (value, key) => _.snakeCase(key));
 
-  return _.mapValues(snakeCaseObject, value => {
+  return _.mapValues(snakeCaseObject, (value) => {
     if (_.isPlainObject(value)) {
       return toSnakeCase(value);
     }
