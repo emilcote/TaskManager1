@@ -11,7 +11,7 @@ const components = {
   LaneHeader,
 };
 
-const TasksBoard = (props) => {
+const TasksBoard = () => {
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editCardId, setEditCardId] = useState(null);
@@ -112,14 +112,6 @@ const TasksBoard = (props) => {
   const handleCreateHide = () => {
     setIsCreateModalOpen(false);
   };
-
-  // const handleTaskCreated = () => {
-  //   handleCreateHide();
-  //   fetchLine("new_task")]).then(data => {
-  //     const [newTask] = data;
-  //     setBoard({ ...board, newTask });
-  //   });
-  // };
 
   const handleTaskCreated = () => {
     handleCreateHide();

@@ -3,7 +3,12 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import UserRepository from './UserRepository';
 
-export default function UserSelect(props) {
+const UserSelect = ({
+  isDisabled, value, onChange, placeholder,
+}) => {
+  UserSelect.defaultProps = {
+    isDisabled: false,
+  };
   const getOptionLabel = (option) => {
     const { firstName, lastName } = option;
     return `${firstName} ${lastName}`;
@@ -13,9 +18,7 @@ export default function UserSelect(props) {
   useEffect(() => {
     loadOptions();
   }, []);
-  const {
-    isDisabled, value, onChange, placeholder,
-  } = props;
+
   return (
     <div>
       <AsyncSelect
@@ -31,13 +34,14 @@ export default function UserSelect(props) {
       />
     </div>
   );
-}
+};
 UserSelect.propTypes = {
   isDisabled: PropTypes.bool,
   onChange: PropTypes.func.isRequired,
   placeholder: PropTypes.string.isRequired,
   value: PropTypes.shape({
     firstName: PropTypes.string.isRequired,
-    lastName: PropTypes.number.isRequired,
+    lastName: PropTypes.string.isRequired,
   }),
 };
+export default UserSelect;
